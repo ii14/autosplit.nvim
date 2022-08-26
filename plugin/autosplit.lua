@@ -30,16 +30,20 @@ local function create_bufenter()
         return
       end
 
-      local bts = vim.g.autosplit_bt
-      if type(bts) ~= 'table' then bts = DEFAULT_BT end
-      local fts = vim.g.autosplit_ft
-      if type(fts) ~= 'table' then fts = DEFAULT_FT end
-
-      local bt = api.nvim_buf_get_option(buf, 'buftype')
-      local ft = api.nvim_buf_get_option(buf, 'filetype')
-
-      if vim.tbl_contains(bts, bt) or vim.tbl_contains(fts, ft) then
+      if vim.g.autosplit_all then
         require('autosplit')(win, prev)
+      else
+        local bts = vim.g.autosplit_bt
+        if type(bts) ~= 'table' then bts = DEFAULT_BT end
+        local fts = vim.g.autosplit_ft
+        if type(fts) ~= 'table' then fts = DEFAULT_FT end
+
+        local bt = api.nvim_buf_get_option(buf, 'buftype')
+        local ft = api.nvim_buf_get_option(buf, 'filetype')
+
+        if vim.tbl_contains(bts, bt) or vim.tbl_contains(fts, ft) then
+          require('autosplit')(win, prev)
+        end
       end
 
       pending[win] = nil
