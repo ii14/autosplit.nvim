@@ -24,16 +24,18 @@ return function(win, prev)
     twprev = textwidth
   end
 
-  -- win_splitmove triggers WinNew, temporarily disable it
-  local eventignore = api.nvim_get_option('eventignore')
-  api.nvim_command('set eventignore+=WinNew')
-  local ok, err = pcall(fn.win_splitmove, win, prev, {
-    -- the vertical condition is not perfect, it doesn't take into account
-    -- that there already might be another vertical split and after :wincmd =
-    -- the space for next vertical split might be actually there. maybe checking
-    -- &columns and excluding splits with &winfixedwidth would be better?
-    vertical = api.nvim_win_get_width(prev) >= twcurr + twprev,
-  })
-  api.nvim_set_option('eventignore', eventignore)
-  assert(ok, err)
+  -- the vertical condition is not perfect, it doesn't take into account
+  -- that there already might be another vertical split and after :wincmd =
+  -- the space for next vertical split might be actually there. maybe checking
+  -- &columns and excluding splits with &winfixedwidth would be better?
+  if api.nvim_win_get_width(prev) >= twcurr + twprev then
+    -- win_splitmove triggers WinNew, temporarily disable it
+    local eventignore = api.nvim_get_option('eventignore')
+    api.nvim_command('set eventignore+=WinNew')
+    local ok, err = pcall(fn.win_splitmove, win, prev, {
+      vertical = true,
+    })
+    api.nvim_set_option('eventignore', eventignore)
+    assert(ok, err)
+  end
 end
