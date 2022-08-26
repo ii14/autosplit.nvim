@@ -11,10 +11,6 @@ g:autosplit_ft ~
     List of 'filetype's to automatically reposition the split on.
     Default: ["man", "fugitive", "gitcommit"]
 
-g:autosplit_all ~
-    Reposition all new splits. Overrides g:autosplit_bt and g:autosplit_ft.
-    Default: false
-
 g:autosplit_tw ~
     Default text width to fall back to when 'textwidth' is not set.
     Default: 80
