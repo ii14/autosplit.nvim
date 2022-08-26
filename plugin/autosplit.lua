@@ -30,9 +30,8 @@ local function create_bufenter()
         return
       end
 
-      if vim.g.autosplit_all then
-        require('autosplit')(win, prev)
-      else
+      local all = vim.g.autosplit_all
+      if all == nil or all == false or all == 0 then
         local bts = vim.g.autosplit_bt
         if type(bts) ~= 'table' then bts = DEFAULT_BT end
         local fts = vim.g.autosplit_ft
@@ -44,6 +43,8 @@ local function create_bufenter()
         if vim.tbl_contains(bts, bt) or vim.tbl_contains(fts, ft) then
           require('autosplit')(win, prev)
         end
+      else
+        require('autosplit')(win, prev)
       end
 
       pending[win] = nil
