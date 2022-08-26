@@ -39,7 +39,7 @@ local function create_bufenter()
       local ft = api.nvim_buf_get_option(buf, 'filetype')
 
       if vim.tbl_contains(bts, bt) or vim.tbl_contains(fts, ft) then
-        require('autosplit').autosplit(win, prev)
+        require('autosplit')(win, prev)
       end
 
       pending[win] = nil
